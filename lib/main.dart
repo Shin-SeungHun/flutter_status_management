@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_status_management/di/di_setup.dart';
 import 'package:flutter_status_management/router/routes.dart';
 
 void main() {
   diSetup();
-  runApp(const MyApp());
+  runApp(
+    // ProviderScope를 추가하여 프로젝트 전체에 Riverpod를 활성화
+    const ProviderScope(child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
