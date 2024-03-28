@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
-import 'package:provider/provider.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends ConsumerWidget {
+
+  final ChangeNotifierProvider<MainViewModel> _mainViewModelProvider;
+
+  const MainScreen({super.key,
+    required ChangeNotifierProvider<MainViewModel> mainViewModelProvider,
+  }) : _mainViewModelProvider = mainViewModelProvider;
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.watch(_mainViewModelProvider);
 
-class _MainScreenState extends State<MainScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final MainViewModel viewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         leading: const FlutterLogo(),
@@ -28,6 +29,7 @@ class _MainScreenState extends State<MainScreen> {
                 controller: viewModel.textEditingController,
                 onChanged: (query) {
                   viewModel.searchImage(query: query);
+                  print(viewModel.searchImage(query: query));
                 },
                 decoration: InputDecoration(
                   labelText: '검색',
@@ -52,6 +54,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       viewModel.searchImage(query: viewModel.textEditingController.text);
+                      print(viewModel.searchImage(query: viewModel.textEditingController.text));
+
                     },
                   ),
                 ),
@@ -80,3 +84,4 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
+
