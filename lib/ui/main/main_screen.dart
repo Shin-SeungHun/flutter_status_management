@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
-import 'package:provider/provider.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key, required this.viewModel});
+  final MainViewModel viewModel;
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    final MainViewModel viewModel = context.watch<MainViewModel>();
     return Scaffold(
       appBar: AppBar(
         leading: const FlutterLogo(),
@@ -52,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     onPressed: () {
                       viewModel.searchImage(query: viewModel.textEditingController.text);
+                      print(viewModel.imageList);
                     },
                   ),
                 ),
