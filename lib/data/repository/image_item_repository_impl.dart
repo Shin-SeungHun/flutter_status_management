@@ -5,11 +5,15 @@ import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/data/repository/image_item_repository.dart';
 
 class ImageItemRepositoryImpl implements ImageItemRepository {
-  final _api = ImageApi();
+  final ImageApi _api;
+
+  const ImageItemRepositoryImpl({
+    required ImageApi api,
+  }) : _api = api;
 
   @override
   Future<List<ImageModel>> getImageItems({required String query}) async {
-    final ImageDto dto = await _api.getImageInfoJson(query: query);
+    final ImageDto dto = await _api.getImageResult(query: query);
 
     if (dto.hits == null) {
       return [];
@@ -17,4 +21,6 @@ class ImageItemRepositoryImpl implements ImageItemRepository {
 
     return dto.hits!.map((e) => e.toImageItem()).toList();
   }
+
+
 }
