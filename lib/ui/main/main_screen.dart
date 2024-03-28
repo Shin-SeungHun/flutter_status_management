@@ -4,16 +4,17 @@ import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
 
 class MainScreen extends ConsumerWidget {
+  final StateNotifierProvider<MainViewModel, List<ImageModel>> _mainViewModelProvider;
 
-  final ChangeNotifierProvider<MainViewModel> _mainViewModelProvider;
-
-  const MainScreen({super.key,
-    required ChangeNotifierProvider<MainViewModel> mainViewModelProvider,
-  }) : _mainViewModelProvider = mainViewModelProvider;
+  const MainScreen({
+    super.key,
+    required StateNotifierProvider<MainViewModel, List<ImageModel>> mainViewModelStateProvider,
+  }) : _mainViewModelProvider = mainViewModelStateProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(_mainViewModelProvider);
+    final viewModel = ref.watch(_mainViewModelProvider.notifier);
+    final imageList = ref.watch(_mainViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +30,7 @@ class MainScreen extends ConsumerWidget {
                 controller: viewModel.textEditingController,
                 onChanged: (query) {
                   viewModel.searchImage(query: query);
-                  print(viewModel.searchImage(query: query));
+                  print(imageList);
                 },
                 decoration: InputDecoration(
                   labelText: '검색',
@@ -54,8 +55,7 @@ class MainScreen extends ConsumerWidget {
                     ),
                     onPressed: () {
                       viewModel.searchImage(query: viewModel.textEditingController.text);
-                      print(viewModel.searchImage(query: viewModel.textEditingController.text));
-
+                      print(imageList);
                     },
                   ),
                 ),
@@ -63,11 +63,11 @@ class MainScreen extends ConsumerWidget {
               const SizedBox(height: 24),
               Expanded(
                 child: GridView.builder(
-                    itemCount: viewModel.imageList.length,
+                    itemCount: imageList.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, crossAxisSpacing: 32, mainAxisSpacing: 32),
                     itemBuilder: (context, index) {
-                      final ImageModel imageItem = viewModel.imageList[index];
+                      final ImageModel imageItem = imageList[index];
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image.network(
@@ -84,4 +84,3 @@ class MainScreen extends ConsumerWidget {
     );
   }
 }
-

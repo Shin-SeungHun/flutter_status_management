@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/di/di_setup.dart';
 import 'package:flutter_status_management/ui/main/main_screen.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
@@ -10,9 +11,10 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        final ChangeNotifierProvider<MainViewModel> viewModel = ChangeNotifierProvider((ref) => getIt<MainViewModel>());
+        final StateNotifierProvider<MainViewModel, List<ImageModel>> mainViewModelStateProvider =
+            StateNotifierProvider((ref) => getIt<MainViewModel>());
         return MainScreen(
-          mainViewModelProvider: viewModel,
+          mainViewModelStateProvider: mainViewModelStateProvider,
         );
       },
     ),
