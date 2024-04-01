@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_status_management/data/model/image_model.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
+import 'package:get/get.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key, required this.viewModel});
-  final MainViewModel viewModel;
+class MainScreen extends GetView<MainViewModel> {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,9 @@ class MainScreen extends StatelessWidget {
           child: Column(
             children: [
               TextField(
-                controller: viewModel.textEditingController,
+                controller: controller.textEditingController,
                 onChanged: (query) {
-                  viewModel.searchImage(query: query);
+                  controller.searchImage(query: query);
                 },
                 decoration: InputDecoration(
                   labelText: '검색',
@@ -45,8 +45,8 @@ class MainScreen extends StatelessWidget {
                       color: Colors.cyan,
                     ),
                     onPressed: () {
-                      viewModel.searchImage(query: viewModel.textEditingController.text);
-                      print(viewModel.imageList);
+                      controller.searchImage(query: controller.textEditingController.text);
+                      print(controller.imageList);
                     },
                   ),
                 ),
@@ -54,11 +54,11 @@ class MainScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Expanded(
                 child: GridView.builder(
-                    itemCount: viewModel.imageList.length,
+                    itemCount: controller.imageList.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, crossAxisSpacing: 32, mainAxisSpacing: 32),
                     itemBuilder: (context, index) {
-                      final ImageModel imageItem = viewModel.imageList[index];
+                      final ImageModel imageItem = controller.imageList[index];
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image.network(
