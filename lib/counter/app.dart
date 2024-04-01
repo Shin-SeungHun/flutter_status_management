@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_status_management/counter/count_cubit.dart';
+import 'package:flutter_status_management/counter/count_bloc.dart';
 import 'package:flutter_status_management/counter/home.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Get.to(
-                BlocProvider(create: (context) => CountCubit(), child: const Home()),
+                BlocProvider(create: (context) => CountBloc(), child: const Home()),
               );
             },
             child: const Text('cubit count'),
