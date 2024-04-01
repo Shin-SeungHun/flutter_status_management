@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_status_management/di/di_setup.dart';
 import 'package:flutter_status_management/router/routes.dart';
-import 'package:get/get.dart';
 
 void main() {
   diSetup();
-  runApp(const GetMaterialApp(home: MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
