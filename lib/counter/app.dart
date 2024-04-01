@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_status_management/counter/count_getx_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_status_management/counter/count_cubit.dart';
 import 'package:flutter_status_management/counter/home.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('getx count'),
+        title: const Text('cubic'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -19,16 +20,10 @@ class App extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Get.to(
-                const Home(),
-                binding: BindingsBuilder(
-                  () {
-                    Get.put(CountGetxController());
-                  },
-                ),
-                duration: Duration.zero,
+                BlocProvider(create: (context) => CountCubit(), child: const Home()),
               );
             },
-            child: const Text('getx count'),
+            child: const Text('cubit count'),
           ),
         ],
       ),
