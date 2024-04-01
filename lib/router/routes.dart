@@ -11,9 +11,10 @@ final router = GoRouter(
       path: '/',
       builder: (context, state) => GetBuilder(
         init: getIt<MainViewModel>(),
-        builder: (controller) => MainScreen(
-          viewModel: Get.put(getIt<MainViewModel>()),
-        ),
+        dispose: (state) {
+          Get.delete<MainViewModel>();
+        },
+        builder: (controller) => const MainScreen(),
       ),
     ),
   ],
