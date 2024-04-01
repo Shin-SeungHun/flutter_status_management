@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_status_management/counter/count_getx_controller.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_status_management/counter/count_cubit.dart';
 
-class Home extends GetView<CountGetxController> {
+class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('getx 상태관리'),
+        title: const Text('cubit 상태관리'),
       ),
       body: Center(
-        child: Obx(
-          () => Text(
-            controller.count.value.toString(),
+        child: BlocBuilder<CountCubit, int>(builder: (context, state) {
+          return Text(
+            state.toString(),
             style: const TextStyle(fontSize: 80),
-          ),
-        ),
+          );
+        }),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           FloatingActionButton(
             onPressed: () {
-              controller.addCount();
+              context.read<CountCubit>().addCount();
             },
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
             onPressed: () {
-              controller.substractCount();
+              context.read<CountCubit>().substractCount();
             },
             child: const Icon(Icons.minimize),
           ),
