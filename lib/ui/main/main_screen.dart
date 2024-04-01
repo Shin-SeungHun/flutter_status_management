@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_status_management/data/model/image_model.dart';
+import 'package:flutter_status_management/event/search_image_event_extends.dart';
 import 'package:flutter_status_management/ui/main/main_view_model.dart';
-import 'package:get/get.dart';
 
-class MainScreen extends GetView<MainViewModel> {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +27,9 @@ class MainScreen extends GetView<MainViewModel> {
           child: Column(
             children: [
               TextField(
-                controller: controller.textEditingController,
+                controller: textEditingController,
                 onChanged: (query) {
-                  controller.searchImage(query: query);
+                  // context.read<MainViewModel>().add(SearchImageEvent(query: query));
                 },
                 decoration: InputDecoration(
                   labelText: '검색',
@@ -45,28 +53,29 @@ class MainScreen extends GetView<MainViewModel> {
                       color: Colors.cyan,
                     ),
                     onPressed: () {
-                      controller.searchImage(query: controller.textEditingController.text);
-                      print(controller.imageList);
+                      context.read<MainViewModel>().add(SearchImageEventExtends(query: textEditingController.text));
                     },
                   ),
                 ),
               ),
               const SizedBox(height: 24),
               Expanded(
-                child: GridView.builder(
-                    itemCount: controller.imageList.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, crossAxisSpacing: 32, mainAxisSpacing: 32),
-                    itemBuilder: (context, index) {
-                      final ImageModel imageItem = controller.imageList[index];
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: Image.network(
-                          imageItem.imageUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    }),
+                child: BlocBuilder<MainViewModel, List<ImageModel>>(builder: (context, imageList) {
+                  return GridView.builder(
+                      itemCount: imageList.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, crossAxisSpacing: 32, mainAxisSpacing: 32),
+                      itemBuilder: (context, index) {
+                        final ImageModel imageItem = imageList[index];
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Image.network(
+                            imageItem.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      });
+                }),
               )
             ],
           ),
